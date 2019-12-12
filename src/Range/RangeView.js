@@ -11,40 +11,6 @@ import ActionButtons from './ActionButtons'
 import BottomButtons from './BottomButtons'
 import OnChangeCallback from './OnChangeCallback'
 
-const CardRow = styled(Row)`
-  padding: 0;
-  margin: 0;
-`
-
-const CardCol = styled(Col)`
-  padding: 0;
-  margin: 1px;
-`
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
-const StyledRangeView = styled(Card)`
-  margin-bottom: 10px;
-  padding: 10px;
-`
-
-const CardsDiv = styled.div`
-  min-width: 400px;
-  min-height: 400px;
-  width: 35vmax;
-  height: 35vmax;
-`
-
-const RangeTitle = styled.div`
-  margin-bottom: 10px;
-  text-align: center;
-  font-size: 15px;
-  font-weight: 445;
-`
-
 const RangeView = props => {
   const {
     initial,
@@ -120,5 +86,39 @@ const RangeView = props => {
     </Container>
   )
 }
+
+const CardRow = styled(Row)`
+  padding: 0;
+  margin: 0;
+`
+
+const CardCol = styled(Col)`
+  padding: 0;
+  margin: 1px;
+`
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`
+
+const StyledRangeView = styled(Card)`
+  margin-bottom: 10px;
+  padding: 10px;
+`
+
+const CardsDiv = styled.div`
+  min-width: 400px;
+  min-height: 400px;
+  width: 35vmax;
+  height: 35vmax;
+`
+
+const RangeTitle = styled.div`
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 445;
+`
 
 export default RangeView

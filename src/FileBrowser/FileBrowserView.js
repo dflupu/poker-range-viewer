@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components'
+import {ResizableBox} from 'react-resizable'
 import YesNoModal from 'Modals/YesNo'
 import {StyledTreeView, TreeItem, TreePositionLabel} from './Tree'
 
@@ -12,16 +13,12 @@ import AddIcon from '@material-ui/icons/Add'
 
 const FileBrowser = props => {
 
-  const data = React.useRef(null)
-
   const {
     fileBrowserExpanded,
     toggleFileBrowserExpanded,
     setFileBrowserSelection,
     setFileBrowserExclusiveExpanded,
-    rangeWasModified,
-    diskFilesModified,
-    setDiskFilesModified
+    rangeWasModified
   } = props
 
   const [modalData, setModalData] = React.useState({show: false})
@@ -72,14 +69,7 @@ const FileBrowser = props => {
     switchNodeCallback
   ])
 
-  if (!data.current || diskFilesModified) {
-    data.current = props.readDirectoryTree()
-    setDiskFilesModified(false)
-    return null
-  }
-
   const renderTree = node => {
-
     let childrenItems
 
     if (node.children && getNodePositionName(node.children[0])) {
@@ -132,7 +122,13 @@ const FileBrowser = props => {
   }
 
   return (
-    <>
+    <ResizableBox
+      width={200}
+      minConstraints={[150, 100]}
+      height={Infinity}
+      resizeHandles={['ne', 'se']}
+      axis="x"
+    >
       <Card style={{
         userSelect: 'none',
         height: '100%',
@@ -144,7 +140,7 @@ const FileBrowser = props => {
             defaultSelected={props.fileBrowserPath}
             expanded={fileBrowserExpanded}
           >
-            {data.current.children.map(c => renderTree(c))}
+            {props.directoryTree.children.map(c => renderTree(c))}
           </StyledTreeView>
 
           <YesNoModal
@@ -160,7 +156,7 @@ const FileBrowser = props => {
         onAddFolderClicked={props.onAddFolderClicked}
         onDeleteFileClicked={props.onDeleteFileClicked}
       />
-    </>
+    </ResizableBox>
   )
 }
 
@@ -210,7 +206,8 @@ const positionColors = {
   'SB': '#83d0c9',
   'SB Limp': '#83d0c9',
   'BB': '#f6cd61',
-  'BB after Limp': '#f6cd61'
+  'BB after Limp': '#f6cd61',
+  'test': '#ffffff'
 }
 
 const getNodePositionName = node => {
@@ -219,7 +216,7 @@ const getNodePositionName = node => {
 }
 
 const getNodePositionColor = node => {
-  return positionColors[getNodePositionName(node)]
+  return positionColors[getNodePositionName(node)] ?? positionColors['Other']
 }
 
 export default FileBrowser

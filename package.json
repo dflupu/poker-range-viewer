@@ -59,7 +59,12 @@
     "files": [
       "build/**/*",
       "node_modules/**/*"
-    ]
+    ],
+    "win": {
+      "target": "portable"
+    },
+    "npmRebuild": false,
+    "compression": "store"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",

@@ -1,34 +1,19 @@
-import AppView from 'AppView'
-import {connect} from 'react-redux'
+import React from 'react'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
+import Preflop from 'Preflop/Preflop'
+import './App.css'
 
-import {
-  setErrorMessage,
-  resetErrorMessage,
-  setRangeModified,
-  onRangeAdded,
-  onRangeSaved,
-  onRangeLoaded,
-  setFileBrowserSelection,
-  setDiskFilesModified
-} from './Store/actions'
-
-const mapStateToProps = state => {
-  return {
-    fileBrowserPath: state.fileBrowserPath,
-    fileBrowserPathIsDir: state.fileBrowserPathIsDir,
-    savedRanges: state.savedRanges
-  }
+const App = () => {
+  return (
+    <Tabs defaultActiveKey="preflop" className="App">
+      <Tab eventKey="preflop" title="Preflop">
+        <Preflop />
+      </Tab>
+      <Tab eventKey="postflop" title="Postflop">
+      </Tab>
+    </Tabs>
+  )
 }
 
-const mapDispatchToProps = {
-  setErrorMessage,
-  resetErrorMessage,
-  setRangeModified,
-  onRangeAdded,
-  onRangeSaved,
-  onRangeLoaded,
-  setFileBrowserSelection,
-  setDiskFilesModified
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppView)
+export default App
