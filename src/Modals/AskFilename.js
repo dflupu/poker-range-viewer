@@ -21,7 +21,7 @@ const AskFilenameModal = props => {
         <Button onClick={props.onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={() => props.onOk(filename)} color="primary">
+        <Button onClick={() => props.onOk({name: filename})} color="primary">
           Save
         </Button>
       </Modal.Footer>

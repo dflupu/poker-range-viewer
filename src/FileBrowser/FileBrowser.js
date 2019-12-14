@@ -1,29 +1,30 @@
 import {connect} from 'react-redux'
 
 import {
-  setFileBrowserSelection,
-  toggleFileBrowserExpanded,
-  setFileBrowserExclusiveExpanded,
+  onModalShow,
+  onFileBrowserInit,
+  onFileBrowserClick,
 } from 'Store/actions'
 
 import FileBrowserView from './FileBrowserView'
 
 const mapStateToProps = (state, props) => {
+
+  const fileBrowserState = state.fileBrowsers[props.id]
+
   return {
-    rangeWasModified: state.rangeWasModified[state.fileBrowserPath],
-    fileBrowserExpanded: state.fileBrowserExpanded,
-    fileBrowserPath: state.fileBrowserPath,
-    directoryTree: state.directoryTree,
-    onAddFileClicked: props.onAddFileClicked,
-    onAddFolderClicked: props.onAddFolderClicked,
-    onDeleteFileClicked: props.onDeleteFileClicked
+    browserId: props.id,
+    modifiedRanges: state.modifiedRanges[fileBrowserState?.path],
+    fileBrowserExpanded: fileBrowserState?.expanded,
+    fileBrowserPath: fileBrowserState?.path,
+    directoryTree: fileBrowserState?.directoryTree
   }
 }
 
 const mapDispatchToProps = {
-  setFileBrowserSelection,
-  setFileBrowserExclusiveExpanded,
-  toggleFileBrowserExpanded,
+  onModalShow,
+  onFileBrowserInit,
+  onFileBrowserClick,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileBrowserView)

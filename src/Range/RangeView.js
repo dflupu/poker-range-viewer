@@ -15,10 +15,15 @@ const RangeView = props => {
   const {
     initial,
     name,
+    path,
     updateRange,
     villainRangePath,
+    onRangeChange,
+    onRangeSave,
+    isEditting,
     setVillainRangePath,
-    isEditting
+    removeExtraCombos,
+    onModalShow
   } = props
 
   React.useEffect(() => {
@@ -43,7 +48,6 @@ const RangeView = props => {
     updateRange(deck.asDict)
   }
 
-  const {onChange} = props
   const cardRows = []
 
   for (const deckRow of deck.asArray) {
@@ -72,17 +76,18 @@ const RangeView = props => {
         <ComboCount />
 
         <BottomButtons
+          rangePath={path}
           onResetChangesClick={onResetChangesClick}
           onClearRangeClick={onClearRangeClick}
-          onSave={props.onSave}
-          onCopyFrom={props.onCopyFrom}
-          onRemoveExtra={props.removeExtraCombos}
+          onCopyFrom={onModalShow.bind(null, 'ON_RANGE_COPY_FROM', path)}
+          onSave={onRangeSave}
+          onRemoveExtra={removeExtraCombos}
         />
 
       </StyledRangeView>
 
       <Roll />
-      <OnChangeCallback initial={initial} callback={onChange} />
+      <OnChangeCallback initial={initial} path={path} callback={onRangeChange} />
     </Container>
   )
 }

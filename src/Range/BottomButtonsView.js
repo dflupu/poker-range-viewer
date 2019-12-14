@@ -11,7 +11,6 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 
 const BottomButtonsView = props => {
-
   const [villainRangeField, setVillainRangeField] = React.useState(props.villainRangePath)
   const [villainRangeFieldModified, setVillainRangeFieldModified] = React.useState(false)
 
@@ -119,7 +118,14 @@ const BottomButtonsView = props => {
           </ButtonCol>
 
           <ButtonCol>
-            <BottomButton variant="dark" onClick={() => props.onSave(props.range, villainRangeField)}>
+            <BottomButton
+              variant="dark"
+              onClick={() => props.onSave({
+                range: props.range,
+                path: props.rangePath,
+                villainRangeField
+              })}
+            >
               Save
             </BottomButton>
           </ButtonCol>

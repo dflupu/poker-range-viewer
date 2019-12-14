@@ -16,10 +16,12 @@ const mapStateToProps = (state, props) => {
   return {
     initial: props.initial,
     name: props.name,
-    onChange: props.onChange,
-    onSave: props.onSave,
+    path: props.path,
+    onRangeChange: props.onRangeChange,
+    onRangeSave: props.onRangeSave,
     isEditting: state.isEditting,
-    villainRangePath: props.villainRangePath
+    villainRangePath: props.villainRangePath,
+    onModalShow: props.onModalShow
   }
 }
 
@@ -28,9 +30,9 @@ const mapDispatchToProps = {
   setIsEditting,
   setMouseDragAction,
   setSelectedCombo,
-  updateRange,
   setVillainRangePath,
-  removeExtraCombos
+  removeExtraCombos,
+  updateRange
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RangeView)

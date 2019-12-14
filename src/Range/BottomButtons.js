@@ -11,7 +11,8 @@ const mapStateToProps = (state, props) => {
     onResetChangesClick: props.onResetChangesClick,
     onClearRangeClick: props.onClearRangeClick,
     onCopyFrom: props.onCopyFrom,
-    onRemoveExtra: props.onRemoveExtra
+    onRemoveExtra: props.onRemoveExtra,
+    rangePath: props.rangePath,
   }
 }
 

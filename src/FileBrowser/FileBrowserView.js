@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components'
 import {ResizableBox} from 'react-resizable'
-import YesNoModal from 'Modals/YesNo'
 import {StyledTreeView, TreeItem, TreePositionLabel} from './Tree'
 
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolderOutlined'
@@ -14,65 +13,38 @@ import AddIcon from '@material-ui/icons/Add'
 const FileBrowser = props => {
 
   const {
+    browserId,
+    fileBrowserPath,
     fileBrowserExpanded,
-    toggleFileBrowserExpanded,
-    setFileBrowserSelection,
-    setFileBrowserExclusiveExpanded,
-    rangeWasModified
+    onFileBrowserInit,
+    onFileBrowserClick,
+    modifiedRanges,
+    onModalShow
   } = props
 
-  const [modalData, setModalData] = React.useState({show: false})
-
-  const switchNodeCallback = React.useCallback((node, peersToUnexpand, wasToggled) => {
-    if (node.type === 'directory') {
-      if (peersToUnexpand.length === 0 && (wasToggled || !fileBrowserExpanded.includes(node.path))) {
-        toggleFileBrowserExpanded(node.path)
-      } else if (peersToUnexpand) {
-        setFileBrowserExclusiveExpanded(node.path, peersToUnexpand.map(p => p.path))
-      }
-
-      const rfiNode = node.children.filter(c => c.name === 'RFI')[0]
-
-      if (rfiNode) {
-        setFileBrowserSelection(rfiNode.path, rfiNode.type !== 'file')
-        return
-      }
+  React.useEffect(() => {
+    if (fileBrowserPath === undefined) {
+      onFileBrowserInit({browserId})
     }
+  }, [browserId, onFileBrowserInit, fileBrowserPath])
 
-    setFileBrowserSelection(node.path, node.type !== 'file')
-  }, [
-    fileBrowserExpanded,
-    toggleFileBrowserExpanded,
-    setFileBrowserSelection,
-    setFileBrowserExclusiveExpanded
-  ])
+  if (fileBrowserPath === undefined) {
+    return null
+  }
 
-  const handleNodeClick = React.useCallback((node, peersToUnexpand, wasToggled) => {
-    if (rangeWasModified) {
-      setModalData({
-        show: true,
-        onOk: () => {
-          switchNodeCallback(node, peersToUnexpand, wasToggled)
-          setModalData({show: false})
-        },
-        onClose: () => {
-          setModalData({show: false})
-        }
-      })
-
+  const handleNodeClick = (node, peersToUnexpand, wasToggled) => {
+    if (modifiedRanges) {
+      onModalShow({id: 'ASK_DISCARD_CHANGES', node, peersToUnexpand, wasToggled})
       return false
     } else {
-      switchNodeCallback(node, peersToUnexpand, wasToggled)
+      onFileBrowserClick({browserId, node, peersToUnexpand, wasToggled})
     }
-  }, [
-    rangeWasModified,
-    switchNodeCallback
-  ])
+  }
 
   const renderTree = node => {
     let childrenItems
 
-    if (node.children && getNodePositionName(node.children[0])) {
+    if (node.children?.length > 0 && getNodePositionName(node.children[0])) {
       childrenItems = renderTreePositionLabels(node.children)
     } else {
       childrenItems = node.children?.map(child => renderTree(child))
@@ -142,19 +114,12 @@ const FileBrowser = props => {
           >
             {props.directoryTree.children.map(c => renderTree(c))}
           </StyledTreeView>
-
-          <YesNoModal
-            title="Discard changes?"
-            open={modalData.show}
-            onClose={modalData.onClose}
-            onOk={modalData.onOk}
-          />
       </Card>
 
       <AddButtons
-        onAddFileClicked={props.onAddFileClicked}
-        onAddFolderClicked={props.onAddFolderClicked}
-        onDeleteFileClicked={props.onDeleteFileClicked}
+        onAddFileClicked={() => onModalShow({id: 'ON_PREFLOP_ADD_FILE'})}
+        onAddFolderClicked={() => onModalShow({id: 'ON_PREFLOP_ADD_FOLDER'})}
+        onDeleteFileClicked={() => onModalShow({id: 'ON_PREFLOP_DELETE_FILE'})}
       />
     </ResizableBox>
   )
